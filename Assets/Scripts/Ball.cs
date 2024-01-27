@@ -8,6 +8,8 @@ public class Ball : MonoBehaviour
     public float baseSpeed = 5f;
     public float maxSpeed = Mathf.Infinity;
     public float currentSpeed { get; set; }
+    public delegate void ScoredHandler(string scoringPlayer);
+    public event ScoredHandler OnScored;
 
     private void Awake()
     {
@@ -42,6 +44,12 @@ public class Ball : MonoBehaviour
         Vector2 direction = rb.velocity.normalized;
         currentSpeed = Mathf.Min(currentSpeed, maxSpeed);
         rb.velocity = direction * currentSpeed;
+    }
+
+    public void ScorePoint(string scoringPlayer)
+    {
+        if (OnScored != null)
+            OnScored(scoringPlayer);
     }
 
 }
